@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel</title>
+</head>
+<body>
+    <script>
+        var nH = prompt("Qual é o nome do hotel?")
+        alert(`O nome do hotel é ${nH}`)
+
+        function inicio(){
+            var nU = prompt("Digite o seu nome:")
+            var s = parseInt(prompt("Digite a senha:"))
+            if(s != "2678"){
+                alert("SENHA INVÁLIDA!")
+                inicio()
+            }else{
+                alert(`Bem vindo ao hotel ${nH}, ${nU}. É um imenso prazer ter você por aqui!`)
+                menu()
+            }
+
+            function menu(){
+                var oM = parseInt(prompt("1)Reservar 2)Cadastro 3)Pesquisar 4)Eventos 5)Bufê 6)Auditórios 7)Restaurante 8)Combústivel 9)Ar Condicionado"))
+                switch(oM){
+                    case 1: 
+                        reservar()
+                        break
+                    case 2: 
+                        cadastrar()
+                        break
+                    case 3: 
+                        pesquisar()
+                        break
+                    case 4: 
+                        agendar()
+                        break
+                    case 5: 
+                        bufe()
+                        break
+                    case 6: 
+                        auditorio()
+                        break
+                    case 7: 
+                        restaurante()
+                        break
+                    case 8: 
+                        combustivel()
+                        break
+                    case 9: 
+                        ar()
+                        break
+                }
+            }
+
+            function reservar(){
+                var vD = parseFloat(prompt("Qual o valor padrão da diária?"))
+                if(vD < 0){
+                    alert(`Valor inválido, ${nU}`)
+                    reservar()
+                }else{
+                    var dN = parseInt(prompt("Quantas diárias serão necessárias?"))
+                    if(dN < 0 || dN > 30){
+                        alert(`Valor inválido, ${nU}`)
+                        reservar()
+                    }else{
+                        var vT = vD * dN
+                        alert(`O valor de ${dN} dias de hospedagem é de R$${vT}`)
+                        var nH = prompt("Qual o nome do hóspede?")
+                        var c = prompt(`${nU}, você confirma a hospedagem para ${nH} por ${dN} dias? S/N`)
+                        if(c == "N"){
+                            alert(`${nU}, reserva não efetuada`)
+                            inicio()
+                        }else{
+                            alert(`${nU}, reserva efetuada para ${nH}. O valor total é de R$${vT}`)
+                            inicio()
+                        }
+                    }
+                }
+            }
+
+            function cadastrar(){
+                var vD = parseFloat(prompt("Qual o valor padrão da diária?"))
+                var nH
+                var g = 0
+                var m = 0
+                var t = 0
+                do{
+                    var nH = prompt("Qual o nome do Hóspede?")
+                    if(nH != "PARE"){
+                        var i = parseInt(prompt("Qual a idade do Hóspede?"))
+                        if(i <= 6){
+                            g++
+                        }else if(i >= 60){
+                            m++
+                            t += vD / 2
+                        }else{
+                            t += vD
+                        }
+                    }
+                }while(nH != "PARE")
+                alert(`${nU}, o valor total das hospedagens é de R$${t}; ${g} gratuidade(s); ${m} meia(s)`)
+                inicio()
+            }
+            
+            function pesquisar(){
+                var oM = parseInt(prompt("1)Cadastrar 2)Pesquisar 3)Sair"))
+                switch(oM){
+                    case 1: 
+                        cadrastro()
+                    case 2: 
+                        pesquisa()
+                    case 3: 
+                        inicio()
+                }
+
+                function cadrastro(){
+                    var nH = prompt("Qual o nome do Hóspede?")
+                    sessionStorage.setItem("nome", nH)
+                    alert(`Hóspede ${nH} cadastrado(a) com sucesso!`)
+
+                    pesquisar()
+                }
+
+                function pesquisa(){
+                    var pH = prompt("Qual o nome do Hóspede?")
+                    if(sessionStorage.getItem("nome")){
+                        var nH = sessionStorage.getItem("nome")
+                        if(pH == nH){
+                            alert(`Hóspede ${nH} foi encontrado(a)!`)
+                        }else{
+                            alert(`Hóspede ${pH} não foi encontrado(a)!`) 
+                        }
+                    }else{
+                        alert(`Hóspede ${pH} não foi encontrado(a)!`)
+                    }
+
+                    pesquisar()
+                }
+
+            }
+
+            function agendar(){
+                var dE = parseInt(prompt("Qual a duração do evento em horas?"))
+                var g = parseInt(prompt("Quantos garçons serão necessários"))
+                var tH = 10.50
+                var cT = dE * g * tH
+                alert(`Custo total: R$ ${cT}`)
+                var c = prompt("Gostaria de efetuar a reserva? S/N")
+                if(c != "S"){
+                    alert(`${nU}, reserva não efetuada!`)
+                    inicio()
+                }else if(c == "S"){
+                    alert(`${nU}, reserva efetuada com sucesso!`)
+                    inicio()
+                }
+            }
+
+            function bufe(){
+                var cafe = 0.2
+                var agua = 0.5
+                var salgado = 7
+                var c = parseInt(prompt("Qual o número de convidados para o evento?"))
+                if(c >= 360){
+                    alert("Quantidade de convidados superior à capacidade máxima.")
+                    bufe()
+                }else{
+                    var cP = c * 0.2
+                    var aP = c * 0.5
+                    var sP = c * 7
+                    var cC = cP * 0.8
+                    var cA = aP * 0.4
+                    var cS = (sP * 34) / 100
+                    var cT = cC + cA + cS
+                    alert(`O evento precisará de ${cP} litros de café, ${aP} litros de água, ${sP} salgados. O custo total do evento será de R$ ${cT}`)
+                    var c = prompt("Gostaria de efetuar a reserva? S/N")
+                    if(c != "S"){
+                        alert(`${nU}, reserva não efetuada!`)
+                        inicio()
+                    }else if(c == "S"){
+                        alert(`${nU}, reserva efetuada com sucesso!`)
+                        inicio()
+                    }
+                }
+            }
+
+            function auditorio(){
+                var nC = parseInt(prompt("Qual o número de convidados para o seu evento?"))
+                if(nC > 350){
+                    alert("Quantidade de convidados superior à capacidade máxima.")
+                    auditorio()
+                }else{
+                    var aL = 150
+                    var aC = 350
+                    if(nC <= 220){
+                        var cA = nC - 150
+                        if(cA > 0){
+                            alert(`Use o auditório Laranja (inclua mais ${cA} cadeiras)`)
+                        }else{
+                            alert("Use o auditório Laranja")
+                        }
+                    }else{
+                        alert("Use o auditório Colorado")
+                    }
+                }
+                var c = prompt("Gostaria de efetuar a reserva? S/N")
+                    if(c != "S"){
+                        alert(`${nU}, reserva não efetuada!`)
+                        inicio()
+                    }else if(c == "S"){
+                        alert(`${nU}, reserva efetuada com sucesso!`)
+                        inicio()
+                    }
+            }
+
+            function restaurante(){
+                var dE = prompt("Qual o dia do seu evento?")
+                var hE = parseInt(prompt("Qual a hora do seu evento?"))
+                if(dE == "sabado" || dE == "domingo"){
+                    if(hE < 7 || hE > 15){
+                        alert("Restaurante indisponível!")
+                        restaurante()
+                    }else{
+                        var nE = prompt("Qual o nome da empresa?")
+                        alert(`Restaurante reservado para ${nE}. ${dE} às ${hE}hs.`)
+                        inicio()
+                    }
+                }else{
+                    if(hE < 7 || hE > 23){
+                        alert("Restaurante indisponível!")
+                        restaurante()
+                    }else{
+                        var nE = prompt("Qual o nome da empresa?")
+                        alert(`Restaurante reservado para ${nE}. ${dE} às ${hE}hs.`)
+                        inicio()
+                    }
+                }
+            }
+
+            function combustivel(){
+                var vAW = parseFloat(prompt("Qual o valor do álcool no posto Wayne Oil?"))
+                var vGW = parseFloat(prompt("Qual o valor da gasolina no posto Wayne Oil?"))
+                var vAS = parseFloat(prompt("Qual o valor do álcool no posto Stark Petrol?"))
+                var vGS = parseFloat(prompt("Qual o valor da gasolina no posto Stark Petrol?"))
+                var pDW = 100 - ((vAW * 100) / vGW)
+                var pDS = 100 - ((vAS * 100) / vGS)
+                if(pDS >= 30 && pDW < 30){
+                    //caso ambos preços do alcool forem 30% mais bararto optar por Wayne Oil
+                    alert(`${nU}, é mais barato abastecer com álcool no posto Stark Petrol.`)
+                    inicio()
+                }else if(pDW >= 30){
+                    alert(`${nU}, é mais barato abastecer com álcool no posto Wayne Oil.`)
+                    inicio()
+                }else if(vGW < vGS){
+                    alert(`${nU}, é mais barato abastecer com gasolina no posto Wayne Oil.`)
+                    inicio()
+                }else if(vGS < vGW || vGS == vGW){
+                    //caso os preços da gasolina forem iguais optar por Stark Petrol
+                    alert(`${nU}, é mais barato abastecer com gasolina no posto Stark Petrol.`)
+                    inicio()
+                }
+            }
+
+            function ar(){
+                var nE = prompt("Qual o nome da empresa?")
+                var vA = parseFloat(prompt("Qual o valor por aparelho?"))
+                var qA = parseInt(prompt("Qual a quantidade de aparelhos?"))
+                var pD = parseInt(prompt("Qual a porcentagem de desconto?"))
+                var nPD = parseInt(prompt("Qual o número mínimo de aparelhos para conseguir o desconto?"))
+                var vT
+                if(qA < nPD){
+                    vT = qA * vA
+                }else{
+                    vT = qA * vA - ((qA * vA) * (pD / 100))
+                }
+                alert(`O serviço de ${nE} custará R$ ${vT}`)
+                if(!sessionStorage.getItem("valores")){
+                    sessionStorage.setItem("valores", JSON.stringify([]))
+                }
+                var valores = JSON.parse(sessionStorage.getItem("valores"))
+                valores.push(vT)
+                sessionStorage.setItem("valores", JSON.stringify(valores))
+                var nD = prompt(`Deseja informar novos dados, ${nU}? S/N`)
+                if(nD.toUpperCase() == "N"){
+                    var tV = JSON.parse(sessionStorage.getItem("valores"))
+                    var mV = Math.min(...tV)
+                    alert(`O orçamento de menor valor é o de R$${mV}`)
+                    inicio()
+                }else if(nD.toUpperCase() == "S"){
+                    ar()
+                }
+            }
+
+        }
+
+        inicio()
+        
+    </script>
+</body>
+</html>
